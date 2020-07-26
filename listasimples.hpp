@@ -48,4 +48,16 @@ public:
         }
         contador++;
     }
+
+    bool procurar_chave(T chave){
+        Node<T> *leitor = topo;
+        for(int index=0;index < contador;index++){
+            if(leitor->valor == chave){
+                return true;
+            }
+            leitor = leitor->proximo;
+        }
+        return false;
+    }
+
 };
