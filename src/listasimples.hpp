@@ -1,3 +1,5 @@
+#include <iostream>
+
 template <typename T>
 class Node{
     T valor;
@@ -38,13 +40,39 @@ public:
         contador++;
     }
 
-    void inserir_fundor(T valor){
+    void inserir_fundo(T valor){
         if(contador == 0){
             topo = new Node<T>(valor);
             base = topo;
         }else {
             base->proximo = new Node<T>(valor);
             base = base->proximo;
+        }
+        contador++;
+    }
+
+    void inserir_posicao(T valor, int posicao){
+        if(contador == 0){
+            topo = new Node<T>(valor);
+            base = topo;
+        }else if(posicao > contador || posicao < 0){
+            std::cout <<"[ERRO] Posição inválida para inserção." 
+            << "Erro em " 
+            << __FILE__
+            << " linha" 
+            << __LINE__;
+            exit(-1);
+        }else if (posicao == 0){
+            inserir_frente(valor);
+        }else if(posicao == contador+1){
+            inserir_fundo(valor);
+        }else{
+            Node<T> *leitor = topo;
+            int posicao_leitor = 0;
+            while(posicao_leitor != posicao) {
+                leitor = leitor->proximo;
+            }
+            leitor->proximo = new Node<T>(valor,leitor->proximo);
         }
         contador++;
     }
@@ -58,6 +86,11 @@ public:
             leitor = leitor->proximo;
         }
         return false;
+    }
+
+    bool esta_vazio(){
+        if(contador == 0) return true;
+        else return false;
     }
 
 };
