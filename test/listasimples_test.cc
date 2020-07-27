@@ -12,15 +12,16 @@ TEST(TestesListaSimples,ListaVazia){
 
 TEST(TestesListaSimples, InserindoUmItemNaFrenteComListaVazia){
     ListaSimples<int> *lista_um_item = new ListaSimples<int>();
+    
     int valor = 30;
     lista_um_item->inserir_frente(valor);
 
     int valor_topo = lista_um_item->topo->valor;
-    int valor_base = lista_um_item->base->valor;
     int numero_itens = lista_um_item->contador;
+    
     ASSERT_EQ(numero_itens,1);
     ASSERT_EQ(valor_topo, valor);
-    ASSERT_EQ(valor_topo,valor_base);
+    
 }
 
 TEST(TestesListaSimples,InserirVariosItensNaFrente){
@@ -35,14 +36,13 @@ TEST(TestesListaSimples,InserirVariosItensNaFrente){
     lista_cheia->inserir_frente(terceiro_valor);
 
     int valor_topo = lista_cheia->topo->valor;
-    int valor_base = lista_cheia->base->valor;
     int numero_elementos = lista_cheia->contador;
-
-    ASSERT_NE(valor_base, valor_topo);
-    ASSERT_EQ(valor_base, primeiro_valor);
+   
     ASSERT_EQ(valor_topo,terceiro_valor);
     ASSERT_EQ(numero_elementos, 3);
 }
+    
+    
 
 TEST(TestesListaSimples, InserirUmItemNoFundoComListaVazia){
     ListaSimples<int> *lista_vazia = new ListaSimples<int>();
@@ -51,13 +51,9 @@ TEST(TestesListaSimples, InserirUmItemNoFundoComListaVazia){
     lista_vazia->inserir_fundo(20);
 
     int valor_topo = lista_vazia->topo->valor;
-    int valor_base = lista_vazia->base->valor;
     int numero_elementos = lista_vazia->contador;
 
-
     ASSERT_EQ(valor_topo,valor);
-    ASSERT_EQ(valor_topo,valor_base);
-    ASSERT_EQ(valor_topo, valor_base);
     ASSERT_EQ(numero_elementos, 1);
 }
 
@@ -73,16 +69,16 @@ TEST(TestesListaSimples, InserirVariosItensNoFundo){
     lista_cheia->inserir_fundo(valor_3);
 
     int valor_topo = lista_cheia->topo->valor;
-    int valor_base = lista_cheia->base->valor;
+    int ultimo_valor = lista_cheia->topo->proximo->proximo->valor;
     int numero_elementos = lista_cheia->contador;
     
-    ASSERT_NE(valor_topo, valor_base);
+    ASSERT_NE(valor_topo, ultimo_valor);
     ASSERT_EQ(numero_elementos , 3);
     ASSERT_EQ(valor_topo, valor_1);
-    ASSERT_EQ(valor_base,valor_3);
+    ASSERT_EQ(ultimo_valor,valor_3);
 }
 
-TEST(TesteListaSimples, InserindoNaUltimaPosicaoValida){
+TEST(TestesListaSimples, InserindoNaUltimaPosicaoValida){
     ListaSimples<int> *lista = new ListaSimples<int>();
 
     /*
@@ -95,17 +91,17 @@ TEST(TesteListaSimples, InserindoNaUltimaPosicaoValida){
     lista->inserir_fundo(2);
     lista->inserir_fundo(3);
     lista->inserir_fundo(4);
-    lista->inserir_fundo(5);
+    
     
     int valor_inserido = 10;
 
-    lista->inserir_posicao(valor_inserido,5);
+    lista->inserir_posicao(valor_inserido,4);
 
-    int valor_base = lista->base->valor;
+    int ultimo_valor = lista->topo->proximo->proximo->proximo->proximo->valor;
     int numero_elementos = lista->contador;
 
-    ASSERT_EQ(valor_base, valor_inserido);
-    ASSERT_EQ(numero_elementos, 6);
+    ASSERT_EQ(ultimo_valor, valor_inserido);
+    ASSERT_EQ(numero_elementos, 5);
 }
 
 
@@ -144,7 +140,7 @@ TEST(TestesListaSimples, InserindoNaPrimeiraPosicaoValida){
 
 }
 
-TEST(TesteListaSimples, InserirPosicaoNoMeioDaLista){
+TEST(TestesListaSimples, InserirPosicaoNoMeioDaLista){
     ListaSimples<int> *lista = new ListaSimples<int>();
 
     lista->inserir_fundo(1);
@@ -157,7 +153,7 @@ TEST(TesteListaSimples, InserirPosicaoNoMeioDaLista){
 
     lista->inserir_posicao(valor_inserido,2);
 
-    int valor_posicao_2 = lista->topo->proximo->proximo->valor; 
+    int valor_posicao_2 = lista->topo->proximo->proximo->proximo->valor; 
     int numero_elementos = lista->contador;
 
     ASSERT_EQ(valor_posicao_2, valor_inserido);
@@ -182,4 +178,64 @@ TEST(TestesListaSimples, ProcurarSeContemElemento){
     ASSERT_TRUE(contem_3);
     ASSERT_TRUE(contem_5);
     ASSERT_FALSE(contem_30);
+}
+
+TEST(TestesListaSimples, RemoverPrimeiroElemento){
+    ListaSimples<int> *lista = new ListaSimples<int>();
+
+    lista->inserir_fundo(1);
+    lista->inserir_fundo(2);
+    lista->inserir_fundo(3);
+    lista->inserir_fundo(4);
+    lista->inserir_fundo(5);
+
+    lista->remover_instancia(1);
+
+    int valor_topo = lista->topo->valor;
+    int numero_elementos_restantes = lista->contador;
+    bool elemento_presente = lista->procurar_chave(1);
+
+    
+    ASSERT_FALSE(elemento_presente);
+    ASSERT_EQ(valor_topo, 2);
+    ASSERT_EQ(numero_elementos_restantes, 4);
+}
+
+TEST(TestesListaSimples, RemoverUltimoElemento){
+    ListaSimples<int> *lista = new ListaSimples<int>();
+
+    lista->inserir_fundo(1);
+    lista->inserir_fundo(2);
+    lista->inserir_fundo(3);
+    lista->inserir_fundo(4);
+    lista->inserir_fundo(5);
+
+    lista->remover_instancia(5);
+
+    int ultimo_valor = lista->topo->proximo->proximo->proximo->valor;
+    int numero_elementos_restantes = lista->contador;
+    bool elemento_presente = lista->procurar_chave(5);
+
+    ASSERT_FALSE(elemento_presente);
+    ASSERT_EQ(ultimo_valor, 4);
+    ASSERT_EQ(numero_elementos_restantes, 4);
+}
+
+TEST(TestesListaSimples, RemoverElementoNoMeio){
+    ListaSimples<int> *lista = new ListaSimples<int>();
+
+    lista->inserir_fundo(1);
+    lista->inserir_fundo(2);
+    lista->inserir_fundo(3);
+    lista->inserir_fundo(4);
+    lista->inserir_fundo(5);
+
+    int chave = 3;
+    lista->remover_instancia(chave);
+
+    bool valor_presente = lista->procurar_chave(chave);
+    int numero_elementos_restantes = lista->contador;
+    
+    ASSERT_FALSE(valor_presente);
+    ASSERT_EQ(numero_elementos_restantes, 4);
 }
