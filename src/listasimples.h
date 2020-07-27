@@ -6,7 +6,7 @@ public:
     T valor;
     NodeSimples* proximo;
 
-    NodeSimples(T valor_entrada, NodeSimples proximo_entrada);
+    NodeSimples(T valor_entrada, NodeSimples<T>* proximo_entrada);
 
     NodeSimples(T valor_entrada);
 };
@@ -35,7 +35,7 @@ public:
 
 // Implementação dos métodos para classe NodeSimples
 template <typename T>
-NodeSimples<T>::NodeSimples(T valor_entrada, NodeSimples proximo_entrada){
+NodeSimples<T>::NodeSimples(T valor_entrada, NodeSimples<T>* proximo_entrada){
     valor = valor_entrada;
     proximo = proximo_entrada;
 }
@@ -103,8 +103,8 @@ void ListaSimples<T>::inserir_posicao(T valor, int posicao){
             leitor = leitor->proximo;
         }
         leitor->proximo = new NodeSimples<T>(valor,leitor->proximo);
+        contador++;
     }
-    contador++;
 }
 
 template <typename T>
