@@ -1,5 +1,7 @@
 #include <iostream>
 
+#ifndef LISTASIMPLES_H
+#define LISTASIMPLES_H
 template <typename T>
 class NodeSimples{
 public:
@@ -156,3 +158,4 @@ bool ListaSimples<T>::esta_vazio(){
     if(contador == 0) return true;
     else return false;
 }
+#endif
