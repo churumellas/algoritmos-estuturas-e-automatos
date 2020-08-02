@@ -27,11 +27,12 @@ public:
 
     void remover_todos(T valor);
 
-    void deletar_node(NodeDuplo<T> *node);
-
     bool procurar_elemento(T valor);
 
     bool vazio();
+
+private:
+    void deletar_node(NodeDuplo<T> *node);
 };
 
 
@@ -56,8 +57,9 @@ ListaDupla<T>::ListaDupla(){
 template <typename T>
 void ListaDupla<T>::inserir_frente(T valor){
     if(tamanho == 0){
-        cabeca = new NodeDuplo<T>(valor);
-        cauda = cabeca;
+        NodeDuplo<T> *novoNode = new NodeDuplo<T>(valor);
+        cabeca = novoNode;
+        cauda = novoNode;
     }else{
         NodeDuplo<T> *novoNode = new NodeDuplo<T>(valor);
         novoNode->proximo = cabeca;
@@ -76,8 +78,8 @@ void ListaDupla<T>::inserir_fundo(T valor){
         cauda->proximo = novoNode;
         novoNode->anterior = cauda;
         cauda = novoNode;
+        tamanho++;
     }
-    tamanho++;
 }
 
 template <typename T>
@@ -106,11 +108,15 @@ bool ListaDupla<T>::inserir_meio(T valor, int posicao){
 }
 template <typename T>
 void ListaDupla<T>::deletar_node(NodeDuplo<T> *node){
-    if(node->proximo == nullptr){
+    if(tamanho == 1){
+        //Elemento unitário
+        cabeca = nullptr;
+        cauda = nullptr;
+    }else if(node->proximo == nullptr && tamanho > 0){
         node->anterior->proximo = nullptr;
         node->anterior = nullptr;
         delete[] node;
-    }else if(node->anterior == nullptr){
+    }else if(node->anterior == nullptr && tamanho > 0){
         node->proximo->anterior = nullptr;
         node->proximo = nullptr;
         delete[] node;
@@ -127,12 +133,11 @@ void ListaDupla<T>::deletar_node(NodeDuplo<T> *node){
 template <typename T>
 void ListaDupla<T>::remover_primeiro(T valor){
     NodeDuplo<T> *leitor = cabeca;
-    int posicao_atual = 0;
-    while((leitor->valor != valor) || posicao_atual < tamanho){
+    
+    while(leitor->valor != valor){
         leitor = leitor->proximo;
-        posicao_atual++;
+        if(leitor == nullptr) break;
     }
-
     if(leitor == nullptr){
         return;
     }else {
@@ -143,11 +148,11 @@ void ListaDupla<T>::remover_primeiro(T valor){
 template <typename T>
 void ListaDupla<T>::remover_todos(T valor){
     NodeDuplo<T> *leitor = cabeca;
-    NodeDuplo<T> proximo_leitor;
+    NodeDuplo<T> *proximo_leitor;
     while(leitor != nullptr){
         if(leitor->valor == valor){
             proximo_leitor = leitor->proximo;
-            deletar_node(leitor.copy());
+            deletar_node(leitor);
             leitor = proximo_leitor;
         }else{
             leitor = leitor->proximo;
@@ -163,6 +168,7 @@ bool ListaDupla<T>::procurar_elemento(T valor){
         if(leitor->valor == valor) return true;
         else leitor = leitor->proximo;
     }
+    return false;
 }
 
 template <typename T>
