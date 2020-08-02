@@ -33,6 +33,11 @@ public:
 
     ListaDupla<T> arvore_pos_ordem();
 
+private:
+    void printar_ordem(NodeAvoreBinaria<T> *leitor);
+    void printar_pre_ordem(NodeAvoreBinaria<T> *leitor);
+    void printar_pos_ordem(NodeAvoreBinaria<T> *leitor);
+
 };
 
 
@@ -51,13 +56,50 @@ ArvoreBuscaBinaria<T>::ArvoreBuscaBinaria(){
 }
 
 template <typename T>
+void ArvoreBuscaBinaria<T>::printar_ordem(NodeAvoreBinaria<T> *leitor){
+    if(leitor!= nullptr){
+        printar_ordem(leitor->esquerda);
+        std::cout << leitor->valor << " ";
+        printar_ordem(leitor->direita);
+    }
+}
+
+template <typename T>
+void ArvoreBuscaBinaria<T>::printar_pre_ordem(NodeAvoreBinaria<T> *leitor){
+    if(leitor!= nullptr){
+        std::cout << leitor->valor << " ";
+        printar_ordem(leitor->esquerda);
+        printar_ordem(leitor->direita);
+    }
+}
+
+template <typename T>
+void ArvoreBuscaBinaria<T>::printar_pos_ordem(NodeAvoreBinaria<T> *leitor){
+    if(leitor!= nullptr){
+        printar_ordem(leitor->esquerda);
+        printar_ordem(leitor->direita);
+        std::cout << leitor->valor << " ";
+    }
+}
+
+template <typename T>
+void ArvoreBuscaBinaria<T>::printar_ordem(NodeAvoreBinaria<T> *leitor){
+    if(leitor!= nullptr){
+        printar_ordem(leitor->esquerda);
+        std::cout << leitor->valor << " ";
+        printar_ordem(leitor->direita);
+    }
+}
+
+template <typename T>
 void ArvoreBuscaBinaria<T>::inserir_folha(T valor){
     //TODO: INSERIR FOLHA
 }
 
 template <typename T>
 ListaDupla<T> ArvoreBuscaBinaria<T>::arvore_em_ordem(){
-    //TODO: RETORNAR UMA LISTA COM A ARVORE **EM ORDEM**
+    ListaDupla<T> elementos_em_ordem = new ListaDupla<T>();
+    
 }
 
 template <typename T>
