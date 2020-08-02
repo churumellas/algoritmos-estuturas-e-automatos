@@ -92,6 +92,25 @@ void ArvoreBuscaBinaria<T>::printar_ordem(NodeAvoreBinaria<T> *leitor){
 }
 
 template <typename T>
+void ArvoreBuscaBinaria<T>::mostrar_arvore(std::string modo){
+    
+    /*
+        ord - Mostrar arvore em ordem
+        pre - Mostrar árvore pre ordem
+        pos - Mostrar árvore pos ordem
+    */
+   
+    if(modo == "ord")
+        printar_ordem(root);
+    
+    if(modo == "pre")
+        printar_pre_ordem(root);
+    
+    if(modo == "pos")
+        printar_pos_ordem(root);
+}
+
+template <typename T>
 void ArvoreBuscaBinaria<T>::inserir_folha(T valor){
     //TODO: INSERIR FOLHA
 }
