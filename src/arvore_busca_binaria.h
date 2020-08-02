@@ -27,11 +27,11 @@ public:
 
     void mostrar_arvore(std::string modo);
     
-    ListaDupla<T> arvore_em_ordem();
+    ListaDupla<T> arvore_em_ordem(NodeAvoreBinaria<T> *node);
 
-    ListaDupla<T> arvore_pre_ordem();
+    ListaDupla<T> arvore_pre_ordem(NodeAvoreBinaria<T> *node);
 
-    ListaDupla<T> arvore_pos_ordem();
+    ListaDupla<T> arvore_pos_ordem(NodeAvoreBinaria<T> *node);
 
 private:
     void printar_ordem(NodeAvoreBinaria<T> *leitor);
@@ -116,17 +116,38 @@ void ArvoreBuscaBinaria<T>::inserir_folha(T valor){
 }
 
 template <typename T>
-ListaDupla<T> ArvoreBuscaBinaria<T>::arvore_em_ordem(){
-    ListaDupla<T> elementos_em_ordem = new ListaDupla<T>();
+ListaDupla<T> ArvoreBuscaBinaria<T>::arvore_em_ordem(NodeAvoreBinaria<T>* node){
+    static ListaDupla<T> elementos_em_ordem = new ListaDupla<T>();
+    if(node != nullptr){
+        arvore_em_ordem(node->esquerda);
+        elementos_em_ordem.inserir_fundo(node->valor);
+        arvore_em_ordem(node->direita);
+    }
+    if(node == root)
+        return elementos_em_ordem;
     
 }
 
 template <typename T>
-ListaDupla<T> ArvoreBuscaBinaria<T>::arvore_pos_ordem(){
-    //TODO: RETORNAR UMA LISTA COM A ARVORE **POS** ORDEM
+ListaDupla<T> ArvoreBuscaBinaria<T>::arvore_pos_ordem(NodeAvoreBinaria<T> *node){
+    static ListaDupla<T> elementos_em_ordem = new ListaDupla<T>();
+    if(node != nullptr){
+        arvore_em_ordem(node->esquerda);
+        arvore_em_ordem(node->direita);
+        elementos_em_ordem.inserir_fundo(node->valor);
+    }
+    if(node == root)
+        return elementos_em_ordem;
 }
 
 template <typename T>
-ListaDupla<T> ArvoreBuscaBinaria<T>::arvore_pre_ordem(){
-    //TODO: RETORNAR UMA LISTA COM A ARVORE **PRE** ORDEM
+ListaDupla<T> ArvoreBuscaBinaria<T>::arvore_pre_ordem(NodeAvoreBinaria<T> *node){
+    static ListaDupla<T> elementos_em_ordem = new ListaDupla<T>();
+    if(node != nullptr){
+        elementos_em_ordem.inserir_fundo(node->valor);
+        arvore_em_ordem(node->esquerda);
+        arvore_em_ordem(node->direita);
+    }
+    if(node == root)
+        return elementos_em_ordem;
 }
