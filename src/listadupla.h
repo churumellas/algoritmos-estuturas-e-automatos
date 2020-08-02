@@ -47,6 +47,13 @@ NodeDuplo<T>::NodeDuplo(T valor_chave){
 //Implementação metodos ListaDupla
 
 template <typename T>
+ListaDupla<T>::ListaDupla(){
+    cabeca = nullptr;
+    cauda = nullptr;
+    tamanho = 0;
+}
+
+template <typename T>
 void ListaDupla<T>::inserir_frente(T valor){
     if(tamanho == 0){
         cabeca = new NodeDuplo<T>(valor);
@@ -77,8 +84,10 @@ template <typename T>
 bool ListaDupla<T>::inserir_meio(T valor, int posicao){
     if(tamanho == 0){
         inserir_frente(valor);
+        return true;
     }else if(posicao >= tamanho){
         inserir_fundo(valor);
+        return true;
     }else{
         NodeDuplo<T> *leitor = cabeca;
         NodeDuplo<T> *novoNode = new NodeDuplo<T>(valor);
@@ -91,7 +100,9 @@ bool ListaDupla<T>::inserir_meio(T valor, int posicao){
         novoNode->proximo->anterior = novoNode;
 
         tamanho++;
+        return true;
     }
+    return false;
 }
 template <typename T>
 void ListaDupla<T>::deletar_node(NodeDuplo<T> *node){
@@ -123,7 +134,7 @@ void ListaDupla<T>::remover_primeiro(T valor){
     }
 
     if(leitor == nullptr){
-        return
+        return;
     }else {
         deletar_node(leitor);
     }

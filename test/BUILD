@@ -4,6 +4,7 @@ cc_test(
     srcs = glob(["**/*.cc"]),
     deps = [
         "//src:lista-simples",
+        "//src:lista-dupla",
         "@googletest//:gtest_main",
     ],
 )
