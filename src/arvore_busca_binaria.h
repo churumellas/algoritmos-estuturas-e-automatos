@@ -25,15 +25,19 @@ public:
 
     void remover_folha(T valor);
 
-    bool buscar_folha(T chave);
-
-    bool busca_iterativa(T chave);
-
     void mostrar_arvore(std::string modo);
 
-    T maximo();
+    NodeAvoreBinaria<T> sucessor(NodeAvoreBinaria<T> *leitor);
 
-    T minimo();
+    NodeAvoreBinaria<T> antecessor(NodeAvoreBinaria<T> *leitor);
+
+    NodeAvoreBinaria<T> buscar_folha(T chave);
+
+    NodeAvoreBinaria<T> busca_iterativa(T chave);
+
+    NodeAvoreBinaria<T> maximo();
+
+    NodeAvoreBinaria<T> minimo();
     
     ListaDupla<T> arvore_em_ordem(NodeAvoreBinaria<T> *node);
 
@@ -166,25 +170,25 @@ bool ArvoreBuscaBinaria<T>::buscar_folha(NodeAvoreBinaria<T> *leitor,T chave){
         return true;
     }
 
-    if(leitor->valor > chave) return buscar_folha(leitor->esquerda);
-    else(leitor->valor < chave) return buscar_folha(leitor->direita);
+    if(leitor->valor > chave) return buscar_folha(leitor->esquerda,chave);
+    else(leitor->valor < chave) return buscar_folha(leitor->direita,chave);
 }
 
 template <typename T>
-bool ArvoreBuscaBinaria<T>::buscar_folha(T chave){
+NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::buscar_folha(T chave){
     return buscar_folha(root, chave);
 }
 
 template <typename T>
-bool ArvoreBuscaBinaria<T>::busca_iterativa(T chave){
+NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::busca_iterativa(T chave){
     NodeAvoreBinaria<T> *leitor = root;
     while(leitor->valor != chave){
         if(leitor->valor < chave) leitor = leitor->esquerda;
         else leitor = leitor->direita;
 
-        if(leitor == nullptr) return false;
+        if(leitor == nullptr) break;
     }
-    return true;
+    return leitor;
 }
 
 template <typename T>
@@ -198,19 +202,29 @@ void ArvoreBuscaBinaria<T>::remover_folha(T valor){
 }
 
 template <typename T>
-T ArvoreBuscaBinaria<T>::maximo(){
+NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::sucessor(NodeAvoreBinaria<T> *leitor){
+    //TODO: ENCONTRAR NODE SUCESSOR
+}
+
+template <typename T>
+NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::antecessor(NodeAvoreBinaria<T> *leitor){
+    //TODO: ENCONTRAR NODE ANTECESSOR
+}
+
+template <typename T>
+NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::maximo(){
     NodeAvoreBinaria<T> *leitor = root;
     while(leitor->direita != nullptr)
         leitor = leitor->direita;
     
-    return leitor->valor;
+    return leitor;
 }
 
 template <typename T>
-T ArvoreBuscaBinaria<T>::minimo(){
+NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::minimo(){
     NodeAvoreBinaria<T> *leitor = root;
     while(leitor->esquerda != nullptr)
         leitor = leitor->esquerda;
     
-    return leitor->valor;
+    return leitor;
 }
