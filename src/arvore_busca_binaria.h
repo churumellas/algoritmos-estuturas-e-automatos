@@ -35,10 +35,14 @@ public:
 
     NodeAvoreBinaria<T> busca_iterativa(T chave);
 
-    NodeAvoreBinaria<T> maximo();
+    NodeAvoreBinaria<T> maximo_arvore();
 
-    NodeAvoreBinaria<T> minimo();
+    NodeAvoreBinaria<T> minimo_arvore();
     
+    NodeAvoreBinaria<T> maximo_subarvore(NodeAvoreBinaria<T> *leitor);
+
+    NodeAvoreBinaria<T> minimo_subarvore(NodeAvoreBinaria<T> *leitor);
+
     ListaDupla<T> arvore_em_ordem(NodeAvoreBinaria<T> *node);
 
     ListaDupla<T> arvore_pre_ordem(NodeAvoreBinaria<T> *node);
@@ -212,7 +216,7 @@ NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::antecessor(NodeAvoreBinaria<T> *leito
 }
 
 template <typename T>
-NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::maximo(){
+NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::maximo_arvore(){
     NodeAvoreBinaria<T> *leitor = root;
     while(leitor->direita != nullptr)
         leitor = leitor->direita;
@@ -221,9 +225,25 @@ NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::maximo(){
 }
 
 template <typename T>
-NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::minimo(){
+NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::minimo_arvore(){
     NodeAvoreBinaria<T> *leitor = root;
     while(leitor->esquerda != nullptr)
+        leitor = leitor->esquerda;
+    
+    return leitor;
+}
+
+template <typename T>
+NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::maximo_subarvore(NodeAvoreBinaria<T> *leitor){
+    while(leitor->direita != nullptr)
+        leitor = leitor->direita;
+    
+    return leitor;
+}
+
+template <typename T>
+NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::minimo_subarvore(NodeAvoreBinaria<T> *leitor){
+    while(leitor->direita != nullptr)
         leitor = leitor->esquerda;
     
     return leitor;
