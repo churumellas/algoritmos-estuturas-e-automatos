@@ -27,6 +27,7 @@ public:
 
     bool buscar_folha(T chave);
 
+    bool busca_iterativa(T chave);
 
     void mostrar_arvore(std::string modo);
 
@@ -172,6 +173,18 @@ bool ArvoreBuscaBinaria<T>::buscar_folha(NodeAvoreBinaria<T> *leitor,T chave){
 template <typename T>
 bool ArvoreBuscaBinaria<T>::buscar_folha(T chave){
     return buscar_folha(root, chave);
+}
+
+template <typename T>
+bool ArvoreBuscaBinaria<T>::busca_iterativa(T chave){
+    NodeAvoreBinaria<T> *leitor = root;
+    while(leitor->valor != chave){
+        if(leitor->valor < chave) leitor = leitor->esquerda;
+        else leitor = leitor->direita;
+
+        if(leitor == nullptr) return false;
+    }
+    return true;
 }
 
 template <typename T>
