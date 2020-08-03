@@ -23,7 +23,7 @@ public:
 
     void inserir_folha(T valor);
 
-    void remover_folha(T valor);
+    void remover_folha(T chave);
 
     void mostrar_arvore(std::string modo);
 
@@ -50,7 +50,7 @@ public:
     ListaDupla<T> arvore_pos_ordem(NodeAvoreBinaria<T> *node);
 
 private:
-    bool buscar_folha(NodeAvoreBinaria<T> *leitor, T valor);
+    NodeAvoreBinaria<T> buscar_folha(NodeAvoreBinaria<T> *leitor, T valor);
     void printar_ordem(NodeAvoreBinaria<T> *leitor);
     void printar_pre_ordem(NodeAvoreBinaria<T> *leitor);
     void printar_pos_ordem(NodeAvoreBinaria<T> *leitor);
@@ -166,7 +166,7 @@ ListaDupla<T> ArvoreBuscaBinaria<T>::arvore_pre_ordem(NodeAvoreBinaria<T> *node)
 }
 
 template <typename T>
-bool ArvoreBuscaBinaria<T>::buscar_folha(NodeAvoreBinaria<T> *leitor,T chave){
+NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::buscar_folha(NodeAvoreBinaria<T> *leitor,T chave){
     if(leitor == nullptr){
         return false;
     }
@@ -197,12 +197,47 @@ NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::busca_iterativa(T chave){
 
 template <typename T>
 void ArvoreBuscaBinaria<T>::inserir_folha(T valor){
-    //TODO: INSERIR FOLHA
+    NodeAvoreBinaria<T> novoNode = new NodeAvoreBinaria<T>(valor);
+    if(root == nullptr) root = novoNode;
+    else{
+        NodeAvoreBinaria<T> leitor = root;
+        NodeAvoreBinaria<T> pai_leitor = nullptr;
+        
+        while(leitor != nullptr){
+            pai_leitor = leitor;
+            if(leitor->direita->valor < novoNode->valor) leitor = leitor->esquerda;
+            else leitor = leitor->direita;
+        }
+        novoNode->pai = pai_leitor;
+        if(novoNode->valor < pai_leitor) pai_leitor->esquerda = novoNode;
+        else pai_leitor->direita = novoNode;
+    }
 }
 
 template <typename T>
-void ArvoreBuscaBinaria<T>::remover_folha(T valor){
+void ArvoreBuscaBinaria<T>::remover_folha(T chave){
     //TODO: REMOVER FOLHA
+
+    //DESCULPA PELO ROTIEL (leitor ao contrario) ERA MELHOR QUE x E y
+    NodeAvoreBinaria<T> *folha = buscar_folha(chave);
+    NodeAvoreBinaria<T> *leitor;
+    NodeAvoreBinaria<T> *rotiel;
+    if(folha != nullptr){
+        if(folha->esquerda == nullptr || folha->direita == nullptr) leitor = folha;
+        else leitor = sucessor(folha);
+
+        if(leitor->esquerda != nullptr) rotiel = leitor->esquerda;
+        else rotiel = leitor->direita;
+
+        if(x != nullptr) rotiel->pai = leitor->pai;
+
+        if(leitor->pai == nullptr) root = rotiel;
+        else if(leitor == leitor->pai->esquerda) leitor->esquerda = rotiel;
+        else leitor->direita = rotiel;
+
+        if(rotiel != folha) folha->valor = leitor->valor;
+    }
+
 }
 
 template <typename T>
