@@ -199,10 +199,18 @@ void ArvoreBuscaBinaria<T>::remover_folha(T valor){
 
 template <typename T>
 T ArvoreBuscaBinaria<T>::maximo(){
-    //TODO: VALOR MAXIMO ARVORE
+    NodeAvoreBinaria<T> *leitor = root;
+    while(leitor->direita != nullptr)
+        leitor = leitor->direita;
+    
+    return leitor->valor;
 }
 
 template <typename T>
 T ArvoreBuscaBinaria<T>::minimo(){
-    //TODO: VALOR MINIMO ARVORE
+    NodeAvoreBinaria<T> *leitor = root;
+    while(leitor->esquerda != nullptr)
+        leitor = leitor->esquerda;
+    
+    return leitor->valor;
 }
