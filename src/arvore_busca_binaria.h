@@ -27,7 +27,6 @@ public:
 
     bool buscar_folha(T chave);
 
-    bool buscar_folha(NodeAvoreBinaria<T> *leitor, T valor);
 
     void mostrar_arvore(std::string modo);
 
@@ -42,6 +41,7 @@ public:
     ListaDupla<T> arvore_pos_ordem(NodeAvoreBinaria<T> *node);
 
 private:
+    bool buscar_folha(NodeAvoreBinaria<T> *leitor, T valor);
     void printar_ordem(NodeAvoreBinaria<T> *leitor);
     void printar_pre_ordem(NodeAvoreBinaria<T> *leitor);
     void printar_pos_ordem(NodeAvoreBinaria<T> *leitor);
