@@ -11,3 +11,9 @@ cc_library(
     hdrs = ["listadupla.h"],
     visibility = ["//visibility:public"],
 )
+
+cc_library(
+    name = "arvore-binaria",
+    hdrs = ["arvore_busca_binaria.h"],
+    visibility = ["//visibility:public"],
+)
