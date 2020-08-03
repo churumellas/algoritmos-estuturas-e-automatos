@@ -207,12 +207,30 @@ void ArvoreBuscaBinaria<T>::remover_folha(T valor){
 
 template <typename T>
 NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::sucessor(NodeAvoreBinaria<T> *leitor){
-    //TODO: ENCONTRAR NODE SUCESSOR
+    if(leitor->direita != nullptr)
+        return minimo_subarvore(leitor);
+    else{
+        NodeAvoreBinaria<T> *pai_leitor = leitor->pai;
+        while(pai_leitor != nullptr && leitor == pai_leitor->direita){
+            leitor = pai_leitor;
+            pai_leitor = leitor->pai;
+        }
+        return leitor;
+    }
 }
 
 template <typename T>
 NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::antecessor(NodeAvoreBinaria<T> *leitor){
-    //TODO: ENCONTRAR NODE ANTECESSOR
+    if(leitor->esquerda != nullptr)
+        return maximo_subarvore(leitor);
+    else{
+        NodeAvoreBinaria<T> *pai_leitor = leitor->pai;
+        while(pai_leitor != nullptr && leitor == pai_leitor->esquerda){
+            leitor = pai_leitor;
+            pai_leitor = leitor->pai;
+        }
+        return leitor;
+    }
 }
 
 template <typename T>
