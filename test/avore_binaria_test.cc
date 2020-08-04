@@ -51,7 +51,7 @@ TEST(TestesArvoreBuscaBinaria, RemoverUmItemDaArvore){
     int numero_elementos = arvore->nodes;
     int valor_raiz = arvore->root->valor;
 
-    ASSERT_EQ(numero_elementos, 6);
+    ASSERT_EQ(numero_elementos, 7);
     ASSERT_EQ(valor_raiz, 5);
 }
 
@@ -71,9 +71,6 @@ TEST(TestesArvoreBuscaBinaria, RemoverMesmoItemDuasVezes){
     arvore->remover_folha(alvo);
     int numero_elementos = arvore->nodes;
     int valor_raiz = arvore->root->valor;
-
-    //NOTE: Apagar depois
-    arvore->mostrar_arvore("ord");
 
     ASSERT_EQ(numero_elementos, 6);
     ASSERT_EQ(valor_raiz, 5);
@@ -133,8 +130,8 @@ TEST(TestesArvoreBuscaBinaria, SucessorDoNodeCorreto){
     NodeAvoreBinaria<int> *sucessor_6 = arvore->sucessor(node_6);
     NodeAvoreBinaria<int> *sucessor_5 = arvore->sucessor(node_5);
 
-    ASSERT_EQ(sucessor_5->valor, 6);
-    ASSERT_EQ(sucessor_6->valor, 7);
+    EXPECT_EQ(sucessor_5->valor, 6);
+    EXPECT_EQ(sucessor_6->valor, 7);
 }
 
 TEST(TestesArvoreBuscaBinaria,AntecessorDoNodeCorreto){
@@ -155,7 +152,7 @@ TEST(TestesArvoreBuscaBinaria,AntecessorDoNodeCorreto){
     NodeAvoreBinaria<int> *antecessor_5 = arvore->antecessor(node_5);
 
     ASSERT_EQ(5, antecessor_6->valor);
-    ASSERT_EQ(6, antecessor_5->valor);
+    ASSERT_EQ(4, antecessor_5->valor);
 }
 
 TEST(TestesArvoreBuscaBinaria, ValorMaximoEstaCorreto){
