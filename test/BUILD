@@ -5,6 +5,7 @@ cc_test(
     deps = [
         "//src:lista-simples",
         "//src:lista-dupla",
+        "//src:arvore-binaria",
         "@googletest//:gtest_main",
     ],
 )

@@ -23,34 +23,34 @@ public:
 
     void inserir_folha(T valor);
 
-    void remover_folha(T chave);
+    void remover_folha(NodeAvoreBinaria<T> *z_node);
 
     void mostrar_arvore(std::string modo);
 
-    NodeAvoreBinaria<T> sucessor(NodeAvoreBinaria<T> *leitor);
+    NodeAvoreBinaria<T>* sucessor(NodeAvoreBinaria<T> *leitor);
 
-    NodeAvoreBinaria<T> antecessor(NodeAvoreBinaria<T> *leitor);
+    NodeAvoreBinaria<T>* antecessor(NodeAvoreBinaria<T> *leitor);
 
-    NodeAvoreBinaria<T> buscar_folha(T chave);
+    NodeAvoreBinaria<T>* buscar_folha(T chave);
 
-    NodeAvoreBinaria<T> busca_iterativa(T chave);
+    NodeAvoreBinaria<T>* busca_iterativa(T chave);
 
-    NodeAvoreBinaria<T> maximo_arvore();
+    NodeAvoreBinaria<T>* maximo_arvore();
 
-    NodeAvoreBinaria<T> minimo_arvore();
+    NodeAvoreBinaria<T>* minimo_arvore();
     
-    NodeAvoreBinaria<T> maximo_subarvore(NodeAvoreBinaria<T> *leitor);
+    NodeAvoreBinaria<T>* maximo_subarvore(NodeAvoreBinaria<T> *leitor);
 
-    NodeAvoreBinaria<T> minimo_subarvore(NodeAvoreBinaria<T> *leitor);
+    NodeAvoreBinaria<T>* minimo_subarvore(NodeAvoreBinaria<T> *leitor);
 
-    ListaDupla<T> arvore_em_ordem(NodeAvoreBinaria<T> *node);
+    ListaDupla<T>* arvore_em_ordem(NodeAvoreBinaria<T> *node);
 
-    ListaDupla<T> arvore_pre_ordem(NodeAvoreBinaria<T> *node);
+    ListaDupla<T>* arvore_pre_ordem(NodeAvoreBinaria<T> *node);
 
-    ListaDupla<T> arvore_pos_ordem(NodeAvoreBinaria<T> *node);
+    ListaDupla<T>* arvore_pos_ordem(NodeAvoreBinaria<T> *node);
 
 private:
-    NodeAvoreBinaria<T> buscar_folha(NodeAvoreBinaria<T> *leitor, T valor);
+    NodeAvoreBinaria<T>* buscar_folha(NodeAvoreBinaria<T> *leitor, T valor);
     void printar_ordem(NodeAvoreBinaria<T> *leitor);
     void printar_pre_ordem(NodeAvoreBinaria<T> *leitor);
     void printar_pos_ordem(NodeAvoreBinaria<T> *leitor);
@@ -62,14 +62,15 @@ private:
 template <typename T>
 NodeAvoreBinaria<T>::NodeAvoreBinaria(T entrada){
     valor = entrada;
+    direita = nullptr;
+    esquerda = nullptr;
+    pai = nullptr;
 }
 
 //Implementação métodos arvore binária
 template <typename T>
 ArvoreBuscaBinaria<T>::ArvoreBuscaBinaria(){
-    root->direita = nullptr;
-    root->esquerda = nullptr;
-    root->pai = nullptr;
+    root = nullptr;
     altura = 0;
     nodes = 0;
 }
@@ -102,15 +103,6 @@ void ArvoreBuscaBinaria<T>::printar_pos_ordem(NodeAvoreBinaria<T> *leitor){
 }
 
 template <typename T>
-void ArvoreBuscaBinaria<T>::printar_ordem(NodeAvoreBinaria<T> *leitor){
-    if(leitor!= nullptr){
-        printar_ordem(leitor->esquerda);
-        std::cout << leitor->valor << " ";
-        printar_ordem(leitor->direita);
-    }
-}
-
-template <typename T>
 void ArvoreBuscaBinaria<T>::mostrar_arvore(std::string modo){
     
     /*
@@ -130,7 +122,7 @@ void ArvoreBuscaBinaria<T>::mostrar_arvore(std::string modo){
 }
 
 template <typename T>
-ListaDupla<T> ArvoreBuscaBinaria<T>::arvore_em_ordem(NodeAvoreBinaria<T>* node){
+ListaDupla<T>* ArvoreBuscaBinaria<T>::arvore_em_ordem(NodeAvoreBinaria<T>* node){
     static ListaDupla<T> elementos_em_ordem = new ListaDupla<T>();
     if(node != nullptr){
         arvore_em_ordem(node->esquerda);
@@ -142,8 +134,8 @@ ListaDupla<T> ArvoreBuscaBinaria<T>::arvore_em_ordem(NodeAvoreBinaria<T>* node){
 }
 
 template <typename T>
-ListaDupla<T> ArvoreBuscaBinaria<T>::arvore_pos_ordem(NodeAvoreBinaria<T> *node){
-    static ListaDupla<T> elementos_em_ordem = new ListaDupla<T>();
+ListaDupla<T>* ArvoreBuscaBinaria<T>::arvore_pos_ordem(NodeAvoreBinaria<T> *node){
+    static ListaDupla<T> *elementos_em_ordem = new ListaDupla<T>();
     if(node != nullptr){
         arvore_em_ordem(node->esquerda);
         arvore_em_ordem(node->direita);
@@ -151,11 +143,12 @@ ListaDupla<T> ArvoreBuscaBinaria<T>::arvore_pos_ordem(NodeAvoreBinaria<T> *node)
     }
     if(node == root)
         return elementos_em_ordem;
+    else return nullptr;
 }
 
 template <typename T>
-ListaDupla<T> ArvoreBuscaBinaria<T>::arvore_pre_ordem(NodeAvoreBinaria<T> *node){
-    static ListaDupla<T> elementos_em_ordem = new ListaDupla<T>();
+ListaDupla<T>* ArvoreBuscaBinaria<T>::arvore_pre_ordem(NodeAvoreBinaria<T> *node){
+    static ListaDupla<T> *elementos_em_ordem = new ListaDupla<T>();
     if(node != nullptr){
         elementos_em_ordem.inserir_fundo(node->valor);
         arvore_em_ordem(node->esquerda);
@@ -163,28 +156,33 @@ ListaDupla<T> ArvoreBuscaBinaria<T>::arvore_pre_ordem(NodeAvoreBinaria<T> *node)
     }
     if(node == root)
         return elementos_em_ordem;
+    else return nullptr;
 }
 
 template <typename T>
-NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::buscar_folha(NodeAvoreBinaria<T> *leitor,T chave){
+NodeAvoreBinaria<T>* ArvoreBuscaBinaria<T>::buscar_folha(NodeAvoreBinaria<T> *leitor,T chave){
     if(leitor == nullptr){
-        return false;
+        return nullptr;
     }
     else if(leitor->valor == chave){
-        return true;
+        return leitor;
     }
 
-    if(leitor->valor > chave) return buscar_folha(leitor->esquerda,chave);
-    else(leitor->valor < chave) return buscar_folha(leitor->direita,chave);
+    if(chave < leitor->valor){
+        return buscar_folha(leitor->esquerda, chave);
+    }else{
+        return buscar_folha(leitor->direita, chave);
+    }
 }
 
 template <typename T>
-NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::buscar_folha(T chave){
+NodeAvoreBinaria<T>* ArvoreBuscaBinaria<T>::buscar_folha(T chave){
     return buscar_folha(root, chave);
 }
 
 template <typename T>
-NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::busca_iterativa(T chave){
+NodeAvoreBinaria<T>* ArvoreBuscaBinaria<T>::busca_iterativa(T chave){
+    //FIXME: Não está retornando ponteiro. Ver o que está acontecendo
     NodeAvoreBinaria<T> *leitor = root;
     while(leitor->valor != chave){
         if(leitor->valor < chave) leitor = leitor->esquerda;
@@ -197,51 +195,70 @@ NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::busca_iterativa(T chave){
 
 template <typename T>
 void ArvoreBuscaBinaria<T>::inserir_folha(T valor){
-    NodeAvoreBinaria<T> novoNode = new NodeAvoreBinaria<T>(valor);
-    if(root == nullptr) root = novoNode;
-    else{
-        NodeAvoreBinaria<T> leitor = root;
-        NodeAvoreBinaria<T> pai_leitor = nullptr;
-        
-        while(leitor != nullptr){
-            pai_leitor = leitor;
-            if(leitor->direita->valor < novoNode->valor) leitor = leitor->esquerda;
-            else leitor = leitor->direita;
+    NodeAvoreBinaria<T> *novoNode = new NodeAvoreBinaria<T>(valor);
+    NodeAvoreBinaria<T> *pai_leitor = nullptr;
+    NodeAvoreBinaria<T> *leitor = root;
+    
+    while(leitor != nullptr){
+        pai_leitor = leitor;
+        if(novoNode->valor < leitor->valor){
+            leitor = leitor->esquerda;
+        }else{
+            leitor = leitor->direita;
         }
-        novoNode->pai = pai_leitor;
-        if(novoNode->valor < pai_leitor) pai_leitor->esquerda = novoNode;
-        else pai_leitor->direita = novoNode;
     }
+
+    novoNode->pai = pai_leitor;
+    if(pai_leitor == nullptr){
+        root = novoNode;
+    }else if(novoNode->valor < pai_leitor->valor){
+        pai_leitor->esquerda = novoNode;
+    }else{
+        pai_leitor->direita = novoNode;
+    }
+    nodes++;
 }
 
 template <typename T>
-void ArvoreBuscaBinaria<T>::remover_folha(T chave){
-    //TODO: REMOVER FOLHA
-
-    //DESCULPA PELO ROTIEL (leitor ao contrario) ERA MELHOR QUE x E y
-    NodeAvoreBinaria<T> *folha = buscar_folha(chave);
-    NodeAvoreBinaria<T> *leitor;
-    NodeAvoreBinaria<T> *rotiel;
-    if(folha != nullptr){
-        if(folha->esquerda == nullptr || folha->direita == nullptr) leitor = folha;
-        else leitor = sucessor(folha);
-
-        if(leitor->esquerda != nullptr) rotiel = leitor->esquerda;
-        else rotiel = leitor->direita;
-
-        if(x != nullptr) rotiel->pai = leitor->pai;
-
-        if(leitor->pai == nullptr) root = rotiel;
-        else if(leitor == leitor->pai->esquerda) leitor->esquerda = rotiel;
-        else leitor->direita = rotiel;
-
-        if(rotiel != folha) folha->valor = leitor->valor;
+void ArvoreBuscaBinaria<T>::remover_folha(NodeAvoreBinaria<T> *z_node){
+    NodeAvoreBinaria<T> *y_node;
+    NodeAvoreBinaria<T> *x_node;
+    //ATENTION: Melhorar forma como verifica se node faz parte da arvore
+    if(z_node == nullptr) return;
+    if(buscar_folha(z_node->valor) == nullptr) return;
+    if((z_node->esquerda == nullptr) || (z_node->direita == nullptr)){
+        y_node = z_node;
+    }else{
+        y_node = sucessor(z_node);
     }
 
+    if(y_node->esquerda != nullptr){
+        x_node = y_node->esquerda;
+    }else{
+        x_node = y_node->direita;
+    }
+
+    if(x_node != nullptr){
+        x_node->pai = y_node->pai;
+    }
+
+    if(y_node->pai == nullptr){
+        root = z_node;
+    }else if(y_node == y_node->pai->esquerda){
+        y_node->pai->esquerda = x_node;
+    }else{
+        y_node->pai->direita = x_node;
+    }
+
+    if(y_node != z_node){
+        y_node->valor = z_node->valor;
+    }
+
+    nodes--;
 }
 
 template <typename T>
-NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::sucessor(NodeAvoreBinaria<T> *leitor){
+NodeAvoreBinaria<T>* ArvoreBuscaBinaria<T>::sucessor(NodeAvoreBinaria<T> *leitor){
     if(leitor->direita != nullptr)
         return minimo_subarvore(leitor);
     else{
@@ -255,7 +272,7 @@ NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::sucessor(NodeAvoreBinaria<T> *leitor)
 }
 
 template <typename T>
-NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::antecessor(NodeAvoreBinaria<T> *leitor){
+NodeAvoreBinaria<T>* ArvoreBuscaBinaria<T>::antecessor(NodeAvoreBinaria<T> *leitor){
     if(leitor->esquerda != nullptr)
         return maximo_subarvore(leitor);
     else{
@@ -269,7 +286,7 @@ NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::antecessor(NodeAvoreBinaria<T> *leito
 }
 
 template <typename T>
-NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::maximo_arvore(){
+NodeAvoreBinaria<T>* ArvoreBuscaBinaria<T>::maximo_arvore(){
     NodeAvoreBinaria<T> *leitor = root;
     while(leitor->direita != nullptr)
         leitor = leitor->direita;
@@ -278,7 +295,7 @@ NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::maximo_arvore(){
 }
 
 template <typename T>
-NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::minimo_arvore(){
+NodeAvoreBinaria<T>* ArvoreBuscaBinaria<T>::minimo_arvore(){
     NodeAvoreBinaria<T> *leitor = root;
     while(leitor->esquerda != nullptr)
         leitor = leitor->esquerda;
@@ -287,7 +304,7 @@ NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::minimo_arvore(){
 }
 
 template <typename T>
-NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::maximo_subarvore(NodeAvoreBinaria<T> *leitor){
+NodeAvoreBinaria<T>* ArvoreBuscaBinaria<T>::maximo_subarvore(NodeAvoreBinaria<T> *leitor){
     while(leitor->direita != nullptr)
         leitor = leitor->direita;
     
@@ -295,7 +312,7 @@ NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::maximo_subarvore(NodeAvoreBinaria<T> 
 }
 
 template <typename T>
-NodeAvoreBinaria<T> ArvoreBuscaBinaria<T>::minimo_subarvore(NodeAvoreBinaria<T> *leitor){
+NodeAvoreBinaria<T>* ArvoreBuscaBinaria<T>::minimo_subarvore(NodeAvoreBinaria<T> *leitor){
     while(leitor->direita != nullptr)
         leitor = leitor->esquerda;
     
