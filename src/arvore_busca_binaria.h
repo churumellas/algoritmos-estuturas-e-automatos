@@ -123,10 +123,10 @@ void ArvoreBuscaBinaria<T>::mostrar_arvore(std::string modo){
 
 template <typename T>
 ListaDupla<T>* ArvoreBuscaBinaria<T>::arvore_em_ordem(NodeAvoreBinaria<T>* node){
-    static ListaDupla<T> elementos_em_ordem = new ListaDupla<T>();
+    static ListaDupla<T> *elementos_em_ordem = new ListaDupla<T>();
     if(node != nullptr){
         arvore_em_ordem(node->esquerda);
-        elementos_em_ordem.inserir_fundo(node->valor);
+        elementos_em_ordem->inserir_fundo(node->valor);
         arvore_em_ordem(node->direita);
     }
     if(node == root)
@@ -139,7 +139,7 @@ ListaDupla<T>* ArvoreBuscaBinaria<T>::arvore_pos_ordem(NodeAvoreBinaria<T> *node
     if(node != nullptr){
         arvore_em_ordem(node->esquerda);
         arvore_em_ordem(node->direita);
-        elementos_em_ordem.inserir_fundo(node->valor);
+        elementos_em_ordem->inserir_fundo(node->valor);
     }
     if(node == root)
         return elementos_em_ordem;
@@ -150,7 +150,7 @@ template <typename T>
 ListaDupla<T>* ArvoreBuscaBinaria<T>::arvore_pre_ordem(NodeAvoreBinaria<T> *node){
     static ListaDupla<T> *elementos_em_ordem = new ListaDupla<T>();
     if(node != nullptr){
-        elementos_em_ordem.inserir_fundo(node->valor);
+        elementos_em_ordem->inserir_fundo(node->valor);
         arvore_em_ordem(node->esquerda);
         arvore_em_ordem(node->direita);
     }

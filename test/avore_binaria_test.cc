@@ -96,39 +96,165 @@ TEST(TestesArvoreBuscaBinaria, BuscarNaArvoreRecursivamente){
 }
 
 TEST(TestesArvoreBuscaBinaria,RemoverDoisElementos){
-    //TODO: Remover duas vezes na mesma arvore com valores diferentes
+    ArvoreBuscaBinaria<int> *arvore = new ArvoreBuscaBinaria<int>();
+    arvore->inserir_folha(5);
+    arvore->inserir_folha(7);
+    arvore->inserir_folha(6);
+    arvore->inserir_folha(4);
+    arvore->inserir_folha(8);
+    arvore->inserir_folha(9);
+    arvore->inserir_folha(1);
+    arvore->inserir_folha(10);
 
+    NodeAvoreBinaria<int> *alvo1 = arvore->buscar_folha(1);
+    NodeAvoreBinaria<int> *alvo2 = arvore->buscar_folha(8);
+    arvore->remover_folha(alvo1);
+    arvore->remover_folha(alvo2);
+
+    int numero_node =arvore->nodes;
+    //ATENTION: Verificar melhor se realmente removeu node da estrutura
+    ASSERT_EQ(6, numero_node);
 }
 
 TEST(TestesArvoreBuscaBinaria, SucessorDoNodeCorreto){
-    //TODO: Checar se sucessor está correto
+    ArvoreBuscaBinaria<int> *arvore = new ArvoreBuscaBinaria<int>();
+    arvore->inserir_folha(5);
+    arvore->inserir_folha(7);
+    arvore->inserir_folha(6);
+    arvore->inserir_folha(4);
+    arvore->inserir_folha(8);
+    arvore->inserir_folha(9);
+    arvore->inserir_folha(1);
+    arvore->inserir_folha(10);
 
+    NodeAvoreBinaria<int> *node_6 = arvore->buscar_folha(6);
+    NodeAvoreBinaria<int> *node_5 = arvore->buscar_folha(5);
+
+    NodeAvoreBinaria<int> *sucessor_6 = arvore->sucessor(node_6);
+    NodeAvoreBinaria<int> *sucessor_5 = arvore->sucessor(node_5);
+
+    ASSERT_EQ(sucessor_5->valor, 6);
+    ASSERT_EQ(sucessor_6->valor, 7);
 }
 
 TEST(TestesArvoreBuscaBinaria,AntecessorDoNodeCorreto){
-    //TODO: Checar se antecessor está correto
+    ArvoreBuscaBinaria<int> *arvore = new ArvoreBuscaBinaria<int>();
+    arvore->inserir_folha(5);
+    arvore->inserir_folha(7);
+    arvore->inserir_folha(6);
+    arvore->inserir_folha(4);
+    arvore->inserir_folha(8);
+    arvore->inserir_folha(9);
+    arvore->inserir_folha(1);
+    arvore->inserir_folha(10);
+
+    NodeAvoreBinaria<int> *node_6 = arvore->buscar_folha(6);
+    NodeAvoreBinaria<int> *node_5 = arvore->buscar_folha(5);
+
+    NodeAvoreBinaria<int> *antecessor_6 = arvore->antecessor(node_6);
+    NodeAvoreBinaria<int> *antecessor_5 = arvore->antecessor(node_5);
+
+    ASSERT_EQ(5, antecessor_6->valor);
+    ASSERT_EQ(6, antecessor_5->valor);
 }
 
 TEST(TestesArvoreBuscaBinaria, ValorMaximoEstaCorreto){
-    //TODO: Verificar se valor maximo é o maior
+    ArvoreBuscaBinaria<int> *arvore = new ArvoreBuscaBinaria<int>();
+    arvore->inserir_folha(5);
+    arvore->inserir_folha(7);
+    arvore->inserir_folha(6);
+    arvore->inserir_folha(4);
+    arvore->inserir_folha(8);
+    arvore->inserir_folha(9);
+    arvore->inserir_folha(1);
+    arvore->inserir_folha(10);
 
+    NodeAvoreBinaria<int> *maximo = arvore->maximo_arvore();
+    ASSERT_EQ(10, maximo->valor);
 }
 
 TEST(TestesArvoreBuscaBinaria, ValorMinimoEstaCorreto){
-    //TODO: Verificar se valor minimo é o menor
+    ArvoreBuscaBinaria<int> *arvore = new ArvoreBuscaBinaria<int>();
+    arvore->inserir_folha(5);
+    arvore->inserir_folha(7);
+    arvore->inserir_folha(6);
+    arvore->inserir_folha(4);
+    arvore->inserir_folha(8);
+    arvore->inserir_folha(9);
+    arvore->inserir_folha(1);
+    arvore->inserir_folha(10);
+
+    NodeAvoreBinaria<int> *minimo = arvore->minimo_arvore();
+    ASSERT_EQ(1, minimo->valor);
 
 }
 
 TEST(TestesArvoreBuscaBinaria, ValoresDaListaEstaoEmOrdem){
     //TODO: Verificar se lista com valores em ordem está correta
+    ArvoreBuscaBinaria<int> *arvore = new ArvoreBuscaBinaria<int>();
+    arvore->inserir_folha(5);
+    arvore->inserir_folha(7);
+    arvore->inserir_folha(6);
+    arvore->inserir_folha(4);
+    arvore->inserir_folha(8);
+    arvore->inserir_folha(9);
+    arvore->inserir_folha(1);
+    arvore->inserir_folha(10);
 
+    ListaDupla<int> *lista_em_ordem = arvore->arvore_em_ordem(arvore->root); 
+    int sequencia_esperada[] = {1,4,5,6,7,8,9,10};
+
+    NodeDuplo<int> *leitor = lista_em_ordem->cabeca;
+    int index = 0;
+    while((leitor!=nullptr )&& (index < 8)){
+        ASSERT_EQ(leitor->valor, sequencia_esperada[index]);
+        leitor = leitor->proximo;
+        index++;
+    }
 }
 
 TEST(TestesArvoreBuscaBinaria,ValoresDaListaEstaoEmPreOrdem){
     //TODO: Verificar se lista com valores em pre-ordem está correta
+    ArvoreBuscaBinaria<int> *arvore = new ArvoreBuscaBinaria<int>();
+    arvore->inserir_folha(5);
+    arvore->inserir_folha(7);
+    arvore->inserir_folha(6);
+    arvore->inserir_folha(4);
+    arvore->inserir_folha(8);
+    arvore->inserir_folha(9);
+    arvore->inserir_folha(1);
+    arvore->inserir_folha(10);
 
+    ListaDupla<int> *lista_em_pre_ordem = arvore->arvore_pre_ordem(arvore->root); 
+    int sequencia_esperada[] = {5,4,1,7,6,8,9,10};
+
+    NodeDuplo<int> *leitor = lista_em_pre_ordem->cabeca;
+    int index = 0;
+    while((leitor!=nullptr )&& (index < 8)){
+        ASSERT_EQ(leitor->valor, sequencia_esperada[index]);
+        leitor = leitor->proximo;
+        index++;
+    }
 }
 TEST(TestesArvoreBuscaBinaria, ValoresDaListaEstaoEmPosOrdem){
-    //TODO: Verificar se lista com valores em pos-ordem está correta
+    ArvoreBuscaBinaria<int> *arvore = new ArvoreBuscaBinaria<int>();
+    arvore->inserir_folha(5);
+    arvore->inserir_folha(7);
+    arvore->inserir_folha(6);
+    arvore->inserir_folha(4);
+    arvore->inserir_folha(8);
+    arvore->inserir_folha(9);
+    arvore->inserir_folha(1);
+    arvore->inserir_folha(10);
 
+    ListaDupla<int> *lista_em_pos_ordem = arvore->arvore_pos_ordem(arvore->root); 
+    int sequencia_esperada[] = {1,4,6,10,9,8,7,5};
+
+    NodeDuplo<int> *leitor = lista_em_pos_ordem->cabeca;
+    int index = 0;
+    while((leitor!=nullptr )&& (index < 8)){
+        ASSERT_EQ(leitor->valor, sequencia_esperada[index]);
+        leitor = leitor->proximo;
+        index++;
+    }
 }
